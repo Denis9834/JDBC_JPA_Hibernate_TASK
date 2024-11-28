@@ -13,9 +13,7 @@ import static overridetech.jdbc.jpa.util.Util.*;
 
 public class UserDaoHibernateImpl implements UserDao {
     public UserDaoHibernateImpl() {
-
     }
-
 
     @Override
     public void createUsersTable() {
@@ -34,7 +32,6 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("Таблица создана успешно.");
             transaction.commit();
         } catch (Exception e) {
-            rollbackTransaction(transaction);
             throw new RuntimeException("Не удачная попытка создания таблицы");
         } finally {
             closeSession(session);
@@ -53,7 +50,6 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("Таблица удалена");
             transaction.commit();
         } catch (Exception e) {
-            rollbackTransaction(transaction);
             throw new RuntimeException("Не удачная попытка удаления таблицы");
         } finally {
             closeSession(session);
@@ -74,7 +70,6 @@ public class UserDaoHibernateImpl implements UserDao {
             session.save(user);
             transaction.commit();
         } catch (Exception e) {
-            rollbackTransaction(transaction);
             throw new RuntimeException("Ошибка добавления пользователя в БД");
         } finally {
             closeSession(session);
@@ -95,7 +90,6 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             System.out.printf("Пользователь с id %d, успешно удален.", id);
         } catch (Exception e) {
-            rollbackTransaction(transaction);
             throw new RuntimeException("Ошибка при удалении пользователя по id");
         } finally {
             closeSession(session);
@@ -104,7 +98,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
         Session session = null;
         try {
             session = getSession();
@@ -121,18 +114,12 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             session = getSession();
             transaction = session.beginTransaction();
-
             session.createSQLQuery("TRUNCATE TABLE Users").executeUpdate();
-
-
             transaction.commit();
         } catch (Exception e) {
-            rollbackTransaction(transaction);
             throw new RuntimeException("Ошибка при очистки БД");
         } finally {
             closeSession(session);
         }
-
-
     }
 }

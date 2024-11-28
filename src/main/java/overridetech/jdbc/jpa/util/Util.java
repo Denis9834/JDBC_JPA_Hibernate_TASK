@@ -28,13 +28,6 @@ public class Util {
         if (factory == null) {
             try {
                 factory = new Configuration()
-                        .setProperty("hibernate.connection.url", URL)
-                        .setProperty("hibernate.connection.username", USERNAME)
-                        .setProperty("hibernate.connection.password", PASSWORD)
-                        .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
-                        .setProperty("hibernate.hbm2ddl.auto", "update")
-                        .setProperty("hibernate.show_sql", "true")
-                        .setProperty("hibernate.current_session_context_class", "thread")
                         .addAnnotatedClass(User.class)
                         .buildSessionFactory();
             } catch (Exception e) {
@@ -51,12 +44,6 @@ public class Util {
     public static void closeSession(Session session) {
         if (session != null) {
             session.close();
-        }
-    }
-
-    public static void rollbackTransaction(Transaction transaction) {
-        if (transaction != null) {
-            transaction.rollback();
         }
     }
 }
